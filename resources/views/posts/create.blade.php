@@ -12,17 +12,18 @@
 </head>
 <body>
     <div class="container">
-    <form class="row g-3">
-        <div class="col-12">
-          <label for="title" class="form-label">Email</label>
-          <input type="email" class="form-control" id="title">
+      <form class="row g-3" action="/posts/store" method="post">
+        @csrf
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="title" placeholder="title" name="title">
+        </div>
+        <div class="mb-3">
+          <label for="content" class="form-label">Content</label>
+          <textarea class="form-control" id="content" rows="3" placeholder="content" name="content"></textarea>
         </div>
         <div class="col-12">
-          <label for="contents" class="form-label">Address</label>
-          <input type="text" class="form-control" id="contents" placeholder="1234 Main St">
-        </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary">Sign in</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
     </div>

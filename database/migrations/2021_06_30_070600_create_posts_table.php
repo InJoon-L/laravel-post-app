@@ -20,7 +20,6 @@ class CreatePostsTable extends Migration
             $table->string('image')->nullable();
             $table->foreignId('user_id')
                     ->constrained()
-                    ->onUpdate('cascade')
                     ->onDelete('cascade');
             $table->timestamps();
         });

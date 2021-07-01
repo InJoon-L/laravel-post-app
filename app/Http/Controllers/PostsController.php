@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
 {
@@ -16,8 +18,19 @@ class PostsController extends Controller
         // $req->input['title'];
         // $req->input['contents'];
         $title = $req->title;
-        $contents = $req->content;
-        dd($req);
+        $content = $req->content;
+        // dd($req);
+
+        // DB에 저장
+        $post = new Post();
+        $post->title = $title;
+        $post->content = $content;
+        $post->user_id = Auth::user()->id;
+
+        $post->save();
+
+        // 결과 뷰를 반환
+        return redirect('/posts/index');
     }
 
     // 게시글 수정
@@ -25,4 +38,9 @@ class PostsController extends Controller
 
     }
 
+    public function index() {
+        $posts = Post::all();
+
+        return $posts;
+    }
 }

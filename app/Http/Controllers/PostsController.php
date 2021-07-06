@@ -45,8 +45,18 @@ class PostsController extends Controller
         // $user = User::find($req->);
         $page = $req->page;
         $post = Post::find($req->id);
-        $user = User::find($post->user_id)->name;
-        return view('posts.show', compact('post', 'page', 'user'));
+        $userInfo = User::find($post->user_id);
+        // 작성자 이름
+        $user = $userInfo->name;
+        // 현재 로그인한 사람과 작성자가 같은 사람인지 아닌지 판단
+        $user_id1 = $userInfo->id;
+        $user_id2 = Auth::user()->id;
+        $flag = null;
+
+        if ($user_id1 == $user_id2) $flag = true;
+        else $flag = false;
+
+        return view('posts.show', compact('post', 'page', 'user', 'flag'));
     }
 
     // 게시글 디비에 저장

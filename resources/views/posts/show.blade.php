@@ -41,8 +41,10 @@
             <input type="text" readonly class="form-control" value="{{ $user }}">
         </div>
         <div class="col-12">
+            @if ($flag)
             <a class="btn btn-warning" href="{{ route('post.edit', ['id' => $post->id]) }}" role="button">수정</a>
             <a class="btn btn-danger" href="{{ route('post.delete', ['id' => $post->id]) }}" role="button">삭제</a>
+            @endif
             <a class="btn btn-primary" href="{{ route('index', ['page' => $page]) }}" role="button">뒤로가기</a>
         </div>
     </div>

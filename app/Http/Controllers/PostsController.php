@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostsController extends Controller
 {
@@ -16,11 +17,13 @@ class PostsController extends Controller
     }
 
     // 게시글 등록페이지
-    public function create() {
+    public function create()
+    {
         return view('posts.create');
     }
 
-    public function show(Request $req) {
+    public function show(Request $req)
+    {
         // $user = User::find($req->);
         $page = $req->page;
         $post = Post::find($req->id);
@@ -29,12 +32,14 @@ class PostsController extends Controller
     }
 
     // 게시글 디비에 저장
-    public function store(Request $req) {
+    public function store(Request $req)
+    {
         // $req->input['title'];
         // $req->input['contents'];
         $req->validate([
             'title' => 'required|min:3',
-            'content' => 'required'
+            'content' => 'required',
+            'imageFile' => 'image|Max:2000'
         ]);
 
         $title = $req->title;
@@ -46,6 +51,23 @@ class PostsController extends Controller
         $post->content = $content;
         $post->user_id = Auth::user()->id;
 
+        // 업로드 된 파일의 원래 이름
+        if ($req->file('imageFile')) {
+            $name = $req->file('imageFile')->getClientOriginalName();
+
+            // extension메소드는 업로드 된 파일의 확장자를 얻기 위한 메소드
+            $extension = $req->file('imageFile')->extension();
+            // spaceship.jpg
+            // spaceship_123kaswlfjslk.jpg
+            $nameWithoutExtension = Str::of($name)->basename('.' . $extension);
+            $fileName = $nameWithoutExtension . '_' . time() . '.' . $extension;
+
+            // storeAs 파일의 경로와 이름 지정
+            $req->file('imageFile')->storeAs('public/images', $fileName);
+
+            $post->image = $fileName;
+        }
+
         $post->save();
 
         // 결과 뷰를 반환
@@ -53,11 +75,12 @@ class PostsController extends Controller
     }
 
     // 게시글 수정
-    public function edit() {
-
+    public function edit()
+    {
     }
 
-    public function index() {
+    public function index()
+    {
         // $posts = Post::orderBy('created_at', 'desc')->get();
         // $posts = Post::latest()->get();
         $posts = Post::latest()->paginate(5);

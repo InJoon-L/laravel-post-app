@@ -14,7 +14,7 @@
 <body>
     <div class="container mt-5 mb-5">
         @include('posts.nav')
-        {{-- <a href="{{ route('dashboard') }}">Dashboard</a> --}}
+
         <h2>게시글 리스트</h2>
         @auth
         <a href="/posts/create" class="btn btn-primary">게시글 작성</a>

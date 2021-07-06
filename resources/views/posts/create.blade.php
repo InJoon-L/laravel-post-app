@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         @include('posts.nav')
-      <form class="row g-3" action="/posts/store" method="post">
+      <form class="row g-3" action="/posts/store" method="post" enctype="multipart/form-data"> {{-- 중요! enctype이 반드시 있어야 파일을 보낼수있다 --}}
         @csrf
         <div class="mb-3">
           <label for="title" class="form-label">Title</label>
@@ -27,6 +27,13 @@
           <label for="content" class="form-label">Content</label>
           <textarea class="form-control" id="content" rows="3" placeholder="content" name="content">{{ old('content') }}</textarea>
             @error('content')
+                <div>{{ $message }}</div>
+            @enderror
+        </div>
+        <div class="from-group">
+            <label for="file" class="form-label">File</label>
+            <input type="file" id="file" name="imageFile"><br />
+            @error('imageFile')
                 <div>{{ $message }}</div>
             @enderror
         </div>

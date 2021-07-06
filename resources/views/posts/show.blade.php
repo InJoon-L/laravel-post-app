@@ -22,6 +22,12 @@
             <label for="content" class="form-label">Content</label>
             <textarea class="form-control" readonly id="content" rows="3" placeholder="content" name="content">{{ $post->content }}</textarea>
         </div>
+        <div class="from-group">
+            <label for="imageFile">Post Image</label>
+            <div class="my-6 mx-3 w-3/12">
+                <img class="img-thumbnail rouded" width="20%" src="{{ $post->imagePath() }}">
+            </div>
+        </div>
         <div class="mb-3">
             <label>등록일</label>
             <input type="text" readonly class="form-control" value="{{ $post->created_at }}">

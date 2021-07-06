@@ -11,7 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container mt-5 mb-5">
+    <div class="container m-5">
         @include('posts.nav')
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -30,7 +30,7 @@
         </div>
         <div class="mb-3">
             <label>등록일</label>
-            <input type="text" readonly class="form-control" value="{{ $post->created_at }}">
+            <input type="text" readonly class="form-control" value="{{ $post->created_at->diffForHumans() }}">
         </div>
         <div class="mb-3">
             <label>수정일</label>
@@ -41,7 +41,9 @@
             <input type="text" readonly class="form-control" value="{{ $user }}">
         </div>
         <div class="col-12">
-            <a class="btn btn-primary" href="{{ route('index', ['page' => $page])}}" role="button">뒤로가기</a>
+            <a class="btn btn-warning" href="{{ route('post.edit', ['id' => $post->id]) }}" role="button">수정</a>
+            <a class="btn btn-danger" href="{{ route('post.delete', ['id' => $post->id]) }}" role="button">삭제</a>
+            <a class="btn btn-primary" href="{{ route('index', ['page' => $page]) }}" role="button">뒤로가기</a>
         </div>
     </div>
 </body>

@@ -49,12 +49,14 @@ class PostsController extends Controller
         // 작성자 이름
         $user = $userInfo->name;
         // 현재 로그인한 사람과 작성자가 같은 사람인지 아닌지 판단
-        $user_id1 = $userInfo->id;
-        $user_id2 = Auth::user()->id;
-        $flag = null;
+        $flag = false;
+        if (Auth::user()) {
+            $user_id1 = $userInfo->id;
+            $user_id2 = Auth::user()->id;
 
-        if ($user_id1 == $user_id2) $flag = true;
-        else $flag = false;
+            if ($user_id1 == $user_id2) $flag = true;
+        }
+
 
         return view('posts.show', compact('post', 'page', 'user', 'flag'));
     }

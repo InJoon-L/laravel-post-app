@@ -13,7 +13,7 @@
 <body>
     <div class="container">
         @include('posts.nav')
-      <form class="row g-3" action="{{ route('post.update', ['id' => $post->id]) }}" method="post" enctype="multipart/form-data"> {{-- 중요! enctype이 반드시 있어야 파일을 보낼수있다 --}}
+      <form class="row g-3" action="{{ route('post.update', ['id' => $post->id, 'page' => $page]) }}" method="post" enctype="multipart/form-data"> {{-- 중요! enctype이 반드시 있어야 파일을 보낼수있다 --}}
         @csrf
         @method("put")
 

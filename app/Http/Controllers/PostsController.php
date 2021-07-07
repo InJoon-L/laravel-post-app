@@ -45,20 +45,9 @@ class PostsController extends Controller
         // $user = User::find($req->);
         $page = $req->page;
         $post = Post::find($req->id);
-        $userInfo = User::find($post->user_id);
-        // 작성자 이름
-        $user = $userInfo->name;
-        // 현재 로그인한 사람과 작성자가 같은 사람인지 아닌지 판단
-        $flag = false;
-        if (Auth::user()) {
-            $user_id1 = $userInfo->id;
-            $user_id2 = Auth::user()->id;
+        $user = User::find($post->user_id)->name;
 
-            if ($user_id1 == $user_id2) $flag = true;
-        }
-
-
-        return view('posts.show', compact('post', 'page', 'user', 'flag'));
+        return view('posts.show', compact('post', 'page', 'user'));
     }
 
     // 게시글 디비에 저장
@@ -93,10 +82,10 @@ class PostsController extends Controller
     }
 
     // 게시글 수정페이지
-    public function edit(Post $id)
+    public function edit(Request $req, Post $id)
     {
         // 수정 폼 생성
-        return view('posts.edit')->with('post', $id);
+        return view('posts.edit', ['post' => $id, 'page' => $req->page]);
     }
 
     // 게시글 수정
@@ -111,6 +100,15 @@ class PostsController extends Controller
 
         $post = Post::findOrFail($id);
         // 이미지 파일 수정. 파일 시스템에서
+        // Authorization. 수정 권한이 있는지 검사
+        // 즉, 로그인한 사용자와 게시글의 작성자가 같은지 체크
+        // if (auth()->user()->id != $post->user_id) {
+        //     abort(403);
+        // }
+
+        if ($req->user()->cannot('update', $post)) {
+            abort(403);
+        }
 
         if ($req->file('imageFile')) {
             $imagePath = 'public/images/' . $post->image;
@@ -122,14 +120,33 @@ class PostsController extends Controller
         $post->content = $req->content;
         $post->save();
 
-        return redirect()->route('posts.show', ['id' => $id]);
+        return redirect()->route('posts.show', ['id' => $id, 'page' => $req->page]);
     }
 
     // 게시글 삭제
-    public function destroy($id)
+    public function destroy(Request $req, $id)
     {
         // 파일 시스템에서 이미지 파일 삭제
         // 게시글을 데이터베이스에서 삭제
+        $post = Post::findOrFail($id);
+
+        // Authorization. 수정 권한이 있는지 검사
+        // 즉, 로그인한 사용자와 게시글의 작성자가 같은지 체크
+        // if (auth()->user()->id != $post->user_id) {
+        //     abort(403);
+        // }
+
+        if ($req->user()->cannot('delete', $post)) {
+            abort(403);
+        }
+
+        if ($post->image) {
+            $imagePath = 'public/images/' . $post->image;
+            Storage::delete($imagePath);
+        }
+        $post->delete();
+
+        return redirect()->route('index', ['page' => $req->page]);
     }
 
     public function index()

@@ -24,6 +24,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/posts/create', [PostsController::class, 'create'])->name('create');
 Route::get('/posts/index', [PostsController::class, 'index'])->name('index');
+Route::get('/posts/myindex', [PostsController::class, 'myIndex'])->name('myIndex');
 Route::get('/posts/show/{id}', [PostsController::class, 'show'])->name('posts.show');
 Route::get('/posts/{id}', [PostsController::class, 'edit'])->name('post.edit');
 

@@ -24,10 +24,10 @@
             <li class="list-group-item">
                 <span>
                     <a href="{{ route('posts.show', [
-                        'id'=>$post->id, 'page'=>$posts->currentPage(), 'user_id'=>$post->user_id])}}">Title: {{ $post->title }}</a>
+                        'id'=>$post->id, 'page'=>$posts->currentPage(), 'user_id'=>$post->user_id, 'url'=>$url])}}">Title: {{ $post->title }}</a>
                 </span>
                 <div>
-                    content: {{ $post->content }}
+                    content: {!! $post->content !!}
                 </div>
                 <span>written on {{ $post->created_at->diffForHumans() }}</span>
                 <hr />

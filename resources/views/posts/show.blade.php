@@ -20,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            <textarea class="form-control" readonly id="content" rows="3" placeholder="content" name="content">{{ $post->content }}</textarea>
+            <div class="form-control" readonly id="content" rows="3" placeholder="content" name="content">{!! $post->content !!}</div>
         </div>
         <div class="from-group">
             <label for="imageFile">Post Image</label>
@@ -38,7 +38,7 @@
         </div>
         <div class="mb-3">
             <label>작성자</label>
-            <input type="text" readonly class="form-control" value="{{ $user }}">
+            <input type="text" readonly class="form-control" value="{{ $post->user->name }}">
         </div>
         <div class="col-12">
             @auth
@@ -53,7 +53,11 @@
             @endcan
             {{-- @endif --}}
             @endauth
+            @if ($url === 'index')
             <a class="btn btn-primary" href="{{ route('index', ['page' => $page]) }}" role="button">뒤로가기</a>
+            @else
+            <a class="btn btn-primary" href="{{ route('myIndex', ['page' => $page]) }}" role="button">뒤로가기</a>
+            @endif
         </div>
     </div>
 </body>

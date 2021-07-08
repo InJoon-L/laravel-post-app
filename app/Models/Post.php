@@ -16,4 +16,10 @@ class Post extends Model
 
         return  $path . $imageFile;
     }
+
+    // 외래키 정의 1대n n쪽에서 정의시 단수 post->user 접근 가능
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

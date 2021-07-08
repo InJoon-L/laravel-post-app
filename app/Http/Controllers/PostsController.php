@@ -6,7 +6,9 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class PostsController extends Controller
@@ -45,9 +47,16 @@ class PostsController extends Controller
         // $user = User::find($req->);
         $page = $req->page;
         $post = Post::find($req->id);
-        $user = User::find($post->user_id)->name;
+        $url = $req->url;
 
-        return view('posts.show', compact('post', 'page', 'user'));
+        // $user = User::find($post->user_id)->name;
+        // $user = DB::table('users')
+        //     ->join('posts', function ($join) {
+        //         $join->on('users.id', '=', 'posts.user_id')
+        //             ->where('posts.user_id', '=', $post->user_id);
+        //     })->get();
+
+        return view('posts.show', compact('post', 'page', 'url'));
     }
 
     // 게시글 디비에 저장
@@ -154,7 +163,17 @@ class PostsController extends Controller
         // $posts = Post::orderBy('created_at', 'desc')->get();
         // $posts = Post::latest()->get();
         $posts = Post::latest()->paginate(5);
+        $url = 'index';
 
-        return view('posts.index', ['posts' => $posts]);
+        return view('posts.index', ['posts' => $posts, 'url' => $url]);
+    }
+
+    public function myIndex()
+    {
+        $posts = User::find(Auth::user()->id)->posts()->latest()->paginate(5);
+        // $posts = auth()->user()->posts()->latest()->paginate(5);
+        $url = 'myIndex';
+
+        return view('posts.index', ['posts' => $posts, 'url' => $url]);
     }
 }

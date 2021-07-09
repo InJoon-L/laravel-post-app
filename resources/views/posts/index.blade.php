@@ -25,6 +25,7 @@
                 <span>
                     <a href="{{ route('posts.show', [
                         'id'=>$post->id, 'page'=>$posts->currentPage(), 'user_id'=>$post->user_id, 'url'=>$url])}}">Title: {{ $post->title }}</a>
+                    {{ $post->count }} {{ $post->count > 0 ? Str::plural('view', $post->count) : 'view' }}
                 </span>
                 <div>
                     content: {!! $post->content !!}

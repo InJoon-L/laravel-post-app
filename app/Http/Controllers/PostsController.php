@@ -6,9 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class PostsController extends Controller
@@ -48,6 +46,8 @@ class PostsController extends Controller
         $page = $req->page;
         $post = Post::find($req->id);
         $url = $req->url;
+        $post->count++; // 조회수 증가
+        $post->save(); // DB에 반영
 
         // $user = User::find($post->user_id)->name;
         // $user = DB::table('users')

@@ -51,13 +51,11 @@
                 <button type="submit" class="btn btn-danger">삭제</button>
             </form>
             @endcan
-            {{-- @endif --}}
             @endauth
-            @if ($url === 'index')
-            <a class="btn btn-primary" href="{{ route('index', ['page' => $page]) }}" role="button">뒤로가기</a>
-            @else
-            <a class="btn btn-primary" href="{{ route('myIndex', ['page' => $page]) }}" role="button">뒤로가기</a>
-            @endif
+            <a class="btn btn-primary" href="{{ $url === 'index' ? route('index', ['page' => $page]) : route('myIndex', ['page' => $page]) }}"
+                role="button">뒤로가기</a>
+
+            {{-- <a class="btn btn-primary" href="javascript:history.back();" role="button">뒤로가기</a> --}}
         </div>
     </div>
 </body>

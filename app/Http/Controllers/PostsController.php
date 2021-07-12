@@ -46,8 +46,16 @@ class PostsController extends Controller
         $page = $req->page;
         $post = Post::find($req->id);
         $url = $req->url;
-        $post->count++; // 조회수 증가
-        $post->save(); // DB에 반영
+        // $post->count++; // 조회수 증가
+        // $post->save(); // DB에 반영
+
+        // 이 글을 조회한 사용자들 중에, 현재
+        // 로그인한 사용자가 포함되어 있는지를 체크하고
+        // 포함되어 있지 않으면 추가.
+        // 포함되어 있으면 다음 단계로 넘어감.
+        if (!$post->viewers->contains(Auth::user())) {
+            $post->viewers()->attach(Auth::user()->id);
+        }
 
         // $user = User::find($post->user_id)->name;
         // $user = DB::table('users')
@@ -94,7 +102,7 @@ class PostsController extends Controller
     public function edit(Request $req, Post $id)
     {
         // 수정 폼 생성
-        return view('posts.edit', ['post' => $id, 'page' => $req->page]);
+        return view('posts.edit', ['post' => $id, 'page' => $req->page, 'url' => $req->url]);
     }
 
     // 게시글 수정
@@ -129,7 +137,7 @@ class PostsController extends Controller
         $post->content = $req->content;
         $post->save();
 
-        return redirect()->route('posts.show', ['id' => $id, 'page' => $req->page]);
+        return redirect()->route('posts.show', ['id' => $id, 'page' => $req->page, 'url' => $req->url]);
     }
 
     // 게시글 삭제

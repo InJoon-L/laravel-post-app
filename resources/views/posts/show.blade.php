@@ -44,7 +44,7 @@
             @auth
             {{-- @if (auth()->user()->id == $post->user_id) --}}
             @can('update', $post)
-            <a class="btn btn-warning" href="{{ route('post.edit', ['id' => $post->id, 'page' => $page]) }}" role="button">수정</a>
+            <a class="btn btn-warning" href="{{ route('post.edit', ['id' => $post->id, 'page' => $page, 'url' => $url]) }}" role="button">수정</a>
             <form action="{{ route('post.delete', ['id' => $post->id, 'page' => $page]) }}" method="POST">
                 @csrf
                 @method("delete")
@@ -54,7 +54,6 @@
             @endauth
             <a class="btn btn-primary" href="{{ $url === 'index' ? route('index', ['page' => $page]) : route('myIndex', ['page' => $page]) }}"
                 role="button">뒤로가기</a>
-
             {{-- <a class="btn btn-primary" href="javascript:history.back();" role="button">뒤로가기</a> --}}
         </div>
     </div>

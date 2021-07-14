@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\PostsController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,5 +32,7 @@ Route::get('/posts/{id}', [PostsController::class, 'edit'])->name('post.edit');
 Route::post('/posts/store', [PostsController::class, 'store']);
 Route::delete('/posts/{id}', [PostsController::class, 'destroy'])->name('post.delete');
 Route::put('/posts/{id}', [PostsController::class, 'update'])->name('post.update');
+
+Route::get('/chart/index', [ChartController::class, 'index']);
 
 require __DIR__ . '/auth.php';
